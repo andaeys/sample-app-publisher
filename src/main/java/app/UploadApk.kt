@@ -68,17 +68,17 @@ object UploadApk {
                             editId,
                             TRACK_INTERNAL,
                             Track()
-                                    .setTrack("internal")
+                                    .setTrack(TRACK_INTERNAL)
                                     .setReleases(listOf(
                                             TrackRelease()
-                                                    .setName("Internal base build release")
+                                                    .setName("Internal base build 35")
                                                     .setVersionCodes(apkVersionCodes)
                                                     .setStatus("completed")
                                                     .setInAppUpdatePriority(1)
                                                     .setReleaseNotes(listOf(
                                                             LocalizedText()
                                                                     .setLanguage("en-US")
-                                                                    .setText("base build"))))))
+                                                                    .setText("Internal base build 35"))))))
             val updatedTrack = updateTrackRequest.execute()
             log.info(String.format("Track %s has been updated.", updatedTrack.track))
 
