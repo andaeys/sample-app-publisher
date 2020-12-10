@@ -23,6 +23,12 @@ object UploadApk {
      */
     private const val TRACK_ALPHA = "alpha"
     private const val TRACK_INTERNAL = "internal"
+
+    //change these param
+    private const val RELEASE_NAME = "Internal base build 36 - high"
+    private const val RELEASE_NOTES ="Internal base build 36 - high"
+    private const val RELEASE_PRIORITY = 5
+
     @JvmStatic
     fun main(args: Array<String>) {
         try {
@@ -71,14 +77,14 @@ object UploadApk {
                                     .setTrack(TRACK_INTERNAL)
                                     .setReleases(listOf(
                                             TrackRelease()
-                                                    .setName("Internal base build 35")
+                                                    .setName(RELEASE_NAME)
                                                     .setVersionCodes(apkVersionCodes)
                                                     .setStatus("completed")
-                                                    .setInAppUpdatePriority(1)
+                                                    .setInAppUpdatePriority(RELEASE_PRIORITY)
                                                     .setReleaseNotes(listOf(
                                                             LocalizedText()
                                                                     .setLanguage("en-US")
-                                                                    .setText("Internal base build 35"))))))
+                                                                    .setText(RELEASE_NOTES))))))
             val updatedTrack = updateTrackRequest.execute()
             log.info(String.format("Track %s has been updated.", updatedTrack.track))
 
