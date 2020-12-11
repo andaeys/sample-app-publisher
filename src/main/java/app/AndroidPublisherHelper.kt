@@ -162,17 +162,22 @@ object AndroidPublisherHelper {
             authorizeWithServiceAccount(serviceAccountEmail)
         }
 
-        val httpRequestInitializer = HttpRequestInitializer { httpRequest ->
-            httpRequest.connectTimeout = 3 * 60000 // 3 minutes connect timeout
-            httpRequest.readTimeout = 3 * 60000 // 3 minutes read timeout
-        }
+        val httpRequestInitializer = setHttpTimeout(credential)
 
         // Set up and return API client.
         return AndroidPublisher.Builder(
             HTTP_TRANSPORT, JSON_FACTORY, credential
         ).setApplicationName(applicationName)
-//            .setHttpRequestInitializer(httpRequestInitializer)
+            .setHttpRequestInitializer(httpRequestInitializer)
             .build()
+    }
+
+    private fun setHttpTimeout(requestInitializer: HttpRequestInitializer): HttpRequestInitializer? {
+        return HttpRequestInitializer { httpRequest ->
+            requestInitializer.initialize(httpRequest)
+            httpRequest.connectTimeout = 3 * 60000 // 3 minutes connect timeout
+            httpRequest.readTimeout = 3 * 60000 // 3 minutes read timeout
+        }
     }
 
     @Throws(GeneralSecurityException::class, IOException::class)
