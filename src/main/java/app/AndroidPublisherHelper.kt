@@ -7,6 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
@@ -28,6 +29,7 @@ object AndroidPublisherHelper {
         AndroidPublisherHelper::class.java
     )
     const val MIME_TYPE_APK = "application/vnd.android.package-archive"
+    const val MIME_TYPE_AAB = "application/octet-stream"
 
     /** Path to the private key file (only used for Service Account auth).  */
     private const val SRC_RESOURCES_KEY_P12 = "src/main/resources/key.p12"
@@ -160,10 +162,16 @@ object AndroidPublisherHelper {
             authorizeWithServiceAccount(serviceAccountEmail)
         }
 
+        val httpRequestInitializer = HttpRequestInitializer { httpRequest ->
+            httpRequest.connectTimeout = 3 * 60000 // 3 minutes connect timeout
+            httpRequest.readTimeout = 3 * 60000 // 3 minutes read timeout
+        }
+
         // Set up and return API client.
         return AndroidPublisher.Builder(
             HTTP_TRANSPORT, JSON_FACTORY, credential
         ).setApplicationName(applicationName)
+//            .setHttpRequestInitializer(httpRequestInitializer)
             .build()
     }
 
