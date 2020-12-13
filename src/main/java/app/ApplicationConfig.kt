@@ -28,7 +28,7 @@ class ApplicationConfig {
          * account email and add your key.p12 file to the resources directory.
          *
          */
-        const val SERVICE_ACCOUNT_EMAIL = "your-app-name@api-xxxxxxx.iam.gserviceaccount.com"
+        const val SERVICE_ACCOUNT_EMAIL = "learn-android@api-4918360869960997146-390636.iam.gserviceaccount.com"
 
 
         /**
@@ -40,7 +40,7 @@ class ApplicationConfig {
          *
          */
         const val APK_FILE_PATH =
-            "~/../../base_36_high.apk"
+            "C:\\Workspace\\learn-android-app-publisher\\src\\main\\resources\\base_36.aab"
     }
 
     private fun ApplicationConfig() {
