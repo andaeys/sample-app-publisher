@@ -25,9 +25,9 @@ object UploadAab {
     private const val TRACK_INTERNAL = "internal"
 
     //change these param
-    private const val RELEASE_NAME = "Internal base build 35 aab - low"
-    private const val RELEASE_NOTES ="Internal base build 35 aab - low"
-    private const val RELEASE_PRIORITY = 2
+    private const val RELEASE_NAME = "Internal base build 36 aab - low"
+    private const val RELEASE_NOTES ="Internal base build 36 aab - low"
+    private const val RELEASE_PRIORITY = 3
 
     @JvmStatic
     fun main(args: Array<String>) {
