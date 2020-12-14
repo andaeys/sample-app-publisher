@@ -63,7 +63,10 @@ object AndroidPublisherHelper {
      */
     private var dataStoreFactory: FileDataStoreFactory? = null
     @Throws(GeneralSecurityException::class, IOException::class)
-    private fun authorizeWithServiceAccount(serviceAccountEmail: String): Credential {
+    private fun authorizeWithServiceAccount(
+        serviceAccountEmail: String,
+        filePath: String
+    ): Credential {
         log.info(String.format("Authorizing using Service Account: %s", serviceAccountEmail))
 
         // Build service account credential.
@@ -72,7 +75,7 @@ object AndroidPublisherHelper {
             .setJsonFactory(JSON_FACTORY)
             .setServiceAccountId(serviceAccountEmail)
             .setServiceAccountScopes(setOf(AndroidPublisherScopes.ANDROIDPUBLISHER))
-            .setServiceAccountPrivateKeyFromP12File(File(SRC_RESOURCES_KEY_P12))
+            .setServiceAccountPrivateKeyFromP12File(File(filePath))
             .build()
     }
 
@@ -147,7 +150,8 @@ object AndroidPublisherHelper {
     @Throws(IOException::class, GeneralSecurityException::class)
     internal fun init(
         applicationName: String?,
-        serviceAccountEmail: String? = null
+        serviceAccountEmail: String? = null,
+        filePath: String = SRC_RESOURCES_KEY_P12
     ): AndroidPublisher {
         Preconditions.checkArgument(
             !Strings.isNullOrEmpty(applicationName),
@@ -159,7 +163,7 @@ object AndroidPublisherHelper {
         val credential = if (serviceAccountEmail == null || serviceAccountEmail.isEmpty()) {
             authorizeWithInstalledApplication()
         } else {
-            authorizeWithServiceAccount(serviceAccountEmail)
+            authorizeWithServiceAccount(serviceAccountEmail, filePath)
         }
 
         val httpRequestInitializer = setHttpTimeout(credential)
