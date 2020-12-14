@@ -1,0 +1,11 @@
+
+serviceAccountEmail: xxx.iam.gserviceaccount.com
+
+appName: Hello
+packageName: com.android.hello
+
+track: internal 
+releaseName: internal base build 35 aab - low
+releaseNotes: internal base build 35 aab - low
+releasePriority: 2
+

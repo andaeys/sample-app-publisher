@@ -30,6 +30,8 @@ object UploadAabArgs {
 
         val settings = Yaml.default.decodeFromString(Settings.serializer(), settingsString)
 
+        println("app name: ${settings.appName}")
+        println("package name: ${settings.packageName}")
         println("track: ${settings.track}")
         println("priority: ${settings.releasePriority}")
         println("release name: ${settings.releaseName}")
@@ -39,7 +41,7 @@ object UploadAabArgs {
             val p12FilePath  = p12File.absolutePath
             // Create the API service.
             val service: AndroidPublisher = AndroidPublisherHelper.init(
-                applicationName = ApplicationConfig.APPLICATION_NAME,
+                applicationName = settings.appName,
                 serviceAccountEmail = settings.serviceAccountEmail,
                 filePath = p12FilePath
             )
@@ -47,7 +49,7 @@ object UploadAabArgs {
 
             // Create a new edit to make changes to your listing.
             val editRequest = edits
-                .insert(ApplicationConfig.PACKAGE_NAME,
+                .insert(settings.packageName,
                     null
                     /** no content  */)
             val edit = editRequest.execute()
@@ -64,11 +66,11 @@ object UploadAabArgs {
             val aabFileStream: AbstractInputStreamContent = FileContent(AndroidPublisherHelper.MIME_TYPE_AAB, File(aabFilePath))
             val uploadRequest = edits
                     .bundles()
-                    .upload(ApplicationConfig.PACKAGE_NAME,
+                    .upload(settings.packageName,
                             editId,
                             aabFileStream)
+            log.info("uploading .aab file....")
             val apk = uploadRequest.execute()
-//            val versionCode = 29898L
             val versionCode = apk.versionCode.toLong()
             log.info(String.format("Version code %d has been uploaded",
                     apk.versionCode))
@@ -78,7 +80,7 @@ object UploadAabArgs {
             apkVersionCodes.add(java.lang.Long.valueOf(versionCode))
             val updateTrackRequest = edits
                     .tracks()
-                    .update(ApplicationConfig.PACKAGE_NAME,
+                    .update(settings.packageName,
                             editId,
                             settings.track,
                             Track()
@@ -97,7 +99,7 @@ object UploadAabArgs {
             log.info(String.format("Track %s has been updated.", updatedTrack.track))
 
             // Commit changes for edit.
-            val commitRequest = edits.commit(ApplicationConfig.PACKAGE_NAME, editId)
+            val commitRequest = edits.commit(settings.packageName, editId)
             val appEdit = commitRequest.execute()
             log.info(String.format("App edit with id %s has been comitted", appEdit.id))
         } catch (ex: IOException) {
