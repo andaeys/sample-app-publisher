@@ -27,7 +27,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'app.ArgsTest'
+        attributes 'Main-Class': 'app.UploadAabArgs'
     }
 
     // This line of code recursively collects and copies all of a project's files
